@@ -73,24 +73,106 @@ Once your repository is created, you should always open your **project** rather 
 ## Warm-up exercises from tutorial
 
 1. Read in the fake garden harvest data. Find the data [here](https://github.com/llendway/scraping_etc/blob/main/2020_harvest.csv) and click on the `Raw` button to get a direct link to the data. After reading in the data, do one of the quick checks mentioned in the tutorial.
-  
+
+```{r}
+X2020_harvest <- read_csv("https://raw.githubusercontent.com/llendway/scraping_etc/main/2020_harvest.csv", 
+    col_types = cols(...1 = col_skip(), 
+                    date = col_date(format = "%m/%d/%y"), 
+                    weight = col_number()), 
+    na = "MISSING", 
+    skip = 2)
+
+summary(X2020_harvest)
+```
+
 2. Read in this [data](https://www.kaggle.com/heeraldedhia/groceries-dataset) from the kaggle website. You will need to download the data first. Save it to your project/repo folder. Do some quick checks of the data to assure it has been read in appropriately.
 
+```{r}
+groceries <- read_csv("Groceries_dataset.csv")
+```
+
+
+
 3. Create a table using `gt` with data from your project or from the `garden_harvest` data if your project data aren't ready. Use at least 3 `gt()` functions.
+
+```{r}
+gt(garden_harvest)%>%
+  fmt_date(date)%>%
+  tab_header(title = "Garden Data")%>%
+  opt_table_outline(style = "solid", width = px(3))
+```
+
 
 4. CHALLENGE (not graded): Write code to replicate the table shown below (open the .html file to see it) created from the `garden_harvest` data as best as you can. When you get to coloring the cells, I used the following line of code for the `colors` argument:
   
 ```{r, eval=FALSE}
-colors = scales::col_numeric(
-      palette = paletteer::paletteer_d(
-        palette = "RColorBrewer::YlGn"
-      ) %>% as.character()
+#colors = scales::col_numeric(
+      #palette = paletteer::paletteer_d(
+       # palette = "RColorBrewer::YlGn"
+      #) %>% as.character()
 ```
 
-![](garden_table.html){width=600, height=1000}
+
 
   
 5. Use `patchwork` operators and functions to combine at least two graphs using your project data or `garden_harvest` data if your project data aren't read.
+```{r}
+library(geomtextpath)
+```
+
+```{r}
+garden_harvest_new <- garden_harvest%>%
+  mutate(Vegetable = str_to_title(vegetable))%>%
+  select(Vegetable, weight, date)%>%
+  group_by(date, Vegetable)%>%
+  summarize(total = sum(weight))%>%
+  group_by(Vegetable) %>%
+  mutate(cum_weight = cumsum(total))%>%
+  filter(Vegetable %in% c("Lettuce", "Kale", "Spinach", "Swiss Chard")) 
+```
+
+```{r}
+g1<- ggplot(garden_harvest_new, aes(x = date, y = cum_weight, color = Vegetable, label = Vegetable))+
+    geom_line(size = .6, se = FALSE) +
+    geom_textline(size = 4, fontface = "bold", vjust = 0, hjust = "xmax", text_smoothing = 35) +
+    scale_color_manual(values = c("Kale" = "deepskyblue4",
+                                "Lettuce" ="orangered1",
+                                "Spinach" = "cadetblue3",
+                                "Swiss Chard" = "goldenrod2"))+
+    theme(text = element_text(family = "Avenir"))+
+    theme(legend.position = "none")+
+    labs(title = "Cumulative Harvest of Leafy Greens", 
+         x = NULL, 
+         y = NULL) +
+    theme(panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank(),
+        panel.background = element_blank(),
+        panel.grid.major.y = element_line(size = .1, color = "gray85" ))
+ 
+```
+
+```{r, fig.alt= "This figure is composed of two graphs. The first graph, a line graph, shows the growth of the harvest in grams of 4 different leafy greens over the summer. The second is a bar plot and shows the total cumulative harvest in grams of each leafy green by the end of the summer."}
+g2 <- garden_harvest_new%>%
+  filter(cum_weight == max(cum_weight))%>%
+  ggplot(aes(y = cum_weight, x = Vegetable, fill = Vegetable, label = Vegetable))+
+  geom_col()+
+      scale_fill_manual(values = c("Kale" = "deepskyblue4",
+                                "Lettuce" ="orangered1",
+                                "Spinach" = "cadetblue3",
+                                "Swiss Chard" = "goldenrod2")) +
+  labs(y = NULL, x = NULL)+
+  theme(panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank(),
+        panel.background = element_blank(),
+        panel.grid.major.y = element_line(size = .1, color = "gray85" ))+
+  theme(legend.position = "none")
+```
+
+```{r}
+g1 / g2
+```
+
+  
   
 ## Webscraping exercise (also from tutorial)
 
@@ -98,20 +180,94 @@ Use the data from the [Macalester Registrar's Fall 2017 Class Schedule](https://
 
 6. Find the correct selectors for the following fields. Make sure that each matches 762 results:
 
-  * Course Number
-  * Course Name
-  * Day
-  * Time
-  * Room
-  * Instructor
-  * Avail. / Max
-  * General Education Requirements (make sure you only match 762; beware of the Mac copyright banner at the bottom of the page!)
-  * Description
+  * Course Number - .class-schedule-course-number
+  * Course Name - .class-schedule-course-title
+  * Day - .class-schedule-course-title+ .class-schedule-label
+  * Time - .class-schedule-label:nth-child(4)
+  * Room - .class-schedule-label:nth-child(5)
+  * Instructor - .class-schedule-label:nth-child(6)
+  * Avail. / Max - .class-schedule-label:nth-child(7)
+  * General Education Requirements (make sure you only match 762; beware of the Mac copyright banner at the bottom of the page!) - #content p:nth-child(2)
+  * Description - .collapsed p:nth-child(1)
 
 Then, put all this information into one dataset (tibble or data.frame) Do not include any extraneous information like "Instructor: ".
-  
+
+```{r}
+fall2017 <- read_html("https://www.macalester.edu/registrar/schedules/2017fall/class-schedule/#crs10008")
+```
+
+```{r}
+course_nums <- 
+  fall2017 %>%
+  html_elements(".class-schedule-course-number") %>%
+  html_text2()
+
+course_names <- 
+  fall2017 %>%
+  html_elements(".class-schedule-course-title") %>%
+  html_text2()
+
+course_days <- fall2017 %>%
+  html_elements("td.class-schedule-label:nth-child(3)") %>% 
+  html_text2() %>% 
+  str_sub(start = 7)
+
+course_times <- 
+  fall2017 %>%
+  html_elements(".class-schedule-label:nth-child(4)") %>%
+  html_text2() %>%
+  str_sub(start = 7)
+
+course_room <- 
+  fall2017 %>%
+  html_elements(".class-schedule-label:nth-child(5)") %>%
+  html_text2() %>%
+  str_sub(start = 7)
+
+course_instructor <- 
+  fall2017 %>%
+  html_elements(".class-schedule-label:nth-child(6)") %>%
+  html_text2() %>%
+  str_sub(start = 13)
+
+course_avail_max <- 
+  fall2017 %>%
+  html_elements(".class-schedule-label:nth-child(7)") %>%
+  html_text2() %>%
+  str_sub(start = 14)
+
+course_gen_ed <- 
+  fall2017 %>%
+  html_elements("#content p:nth-child(2)") %>%
+  html_text2()%>%
+  str_sub(start = 34) 
+
+course_description <-  
+  fall2017 %>%
+  html_elements(".collapsed p:nth-child(1)") %>%
+  html_text2()%>%
+  str_sub(start = 3) 
+
+courses_2017 <- tibble(number=course_nums, name=course_names, day = course_days, times = course_times, room = course_room, instructor = course_instructor, avail_max = course_avail_max, gen_ed = course_gen_ed, description = course_description)
+head(courses_2017)
+```
+
 
 7. Create a graph that shows the number of sections offered per department. Hint: The department is a substring of the course number - there are `str_XXX()` functions that can help. Yes, COMP and MATH are the same department, but for this exercise you can just show the results by four letter department code, e.g., with COMP and MATH separate.
+
+```{r, fig.alt= "This is a boxplot of the number of courses per department. The department with the most courses is the Spanish department at around 60 courses."}
+courses_2017%>%
+  separate(number, into = c("department", "number", "section")) %>%
+  group_by(department) %>%
+  summarize(n_courses = n()) %>%
+  ggplot(aes(y = department, x = n_courses)) +
+    geom_col()+
+  labs(x = NULL, y = NULL, title = "Number of Courses per Department")+
+  theme(panel.grid.major.x = element_line(size = .1, color = "gray85" ), 
+        panel.grid.minor.x = element_line(size = .1, color = "gray85" ),
+        panel.background = element_blank(),
+        panel.grid.major.y = element_blank())
+```
 
 
 8. Analyze the typical length of course names by department. To do so, create a new data table based on your courses data table, with the following changes:
@@ -120,6 +276,21 @@ Then, put all this information into one dataset (tibble or data.frame) Do not in
   * Remove departments that have fewer than 10 sections of courses. To do so, group by department, then remove observations in groups with fewer than 10 sections (Hint: use filter with n()). Then `ungroup()` the data.  
   * Create a visualization of the differences across groups in lengths of course names or course descriptions. Think carefully about the visualization you should be using!
 
+```{r, fig.alt = "This is a graph of the distributions of course title lengths by academic department. The data on the course title lengths are represented as boxplots -- one for each department."}
+courses_2017%>%
+  separate(number, into = c("department", "number", "section")) %>%
+  mutate(title_length = str_length(name))%>%
+  group_by(department)%>%
+  filter(n()>10)%>%
+  ungroup()%>%
+  ggplot(aes(y = department, x = title_length))+
+    geom_boxplot() +
+  labs(title = "Course Title Lengths by Department", x = NULL, y = NULL)+
+    theme(panel.grid.major.x = element_line(size = .1, color = "gray85" ), 
+        panel.grid.minor.x = element_line(size = .1, color = "gray85" ),
+        panel.background = element_blank(),
+        panel.grid.major.y = element_blank())
+```
 
   
 
