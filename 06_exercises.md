@@ -16,194 +16,25 @@ output:
 
 ```r
 library(tidyverse)     # for data cleaning and plotting
-```
-
-```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-```
-
-```
-## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.6     ✓ dplyr   1.0.8
-## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-## ✓ readr   2.1.1     ✓ forcats 0.5.1
-```
-
-```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-```
-
-```r
 library(gardenR)       # for Lisa's garden data
 library(lubridate)     # for date manipulation
-```
-
-```
-## 
-## Attaching package: 'lubridate'
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     date, intersect, setdiff, union
-```
-
-```r
 library(openintro)     # for the abbr2state() function
-```
-
-```
-## Loading required package: airports
-```
-
-```
-## Loading required package: cherryblossom
-```
-
-```
-## Loading required package: usdata
-```
-
-```r
 library(palmerpenguins)# for Palmer penguin data
 library(maps)          # for map data
-```
-
-```
-## 
-## Attaching package: 'maps'
-```
-
-```
-## The following object is masked from 'package:purrr':
-## 
-##     map
-```
-
-```r
 library(ggmap)         # for mapping points on maps
-```
-
-```
-## Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
-```
-
-```
-## Please cite ggmap if you use it! See citation("ggmap") for details.
-```
-
-```r
 library(gplots)        # for col2hex() function
-```
-
-```
-## 
-## Attaching package: 'gplots'
-```
-
-```
-## The following object is masked from 'package:stats':
-## 
-##     lowess
-```
-
-```r
 library(RColorBrewer)  # for color palettes
 library(sf)            # for working with spatial data
-```
-
-```
-## Linking to GEOS 3.9.1, GDAL 3.4.0, PROJ 8.1.1; sf_use_s2() is TRUE
-```
-
-```r
 library(leaflet)       # for highly customizable mapping
 library(ggthemes)      # for more themes (including theme_map())
 library(plotly)        # for the ggplotly() - basic interactivity
-```
-
-```
-## 
-## Attaching package: 'plotly'
-```
-
-```
-## The following object is masked from 'package:ggmap':
-## 
-##     wind
-```
-
-```
-## The following object is masked from 'package:ggplot2':
-## 
-##     last_plot
-```
-
-```
-## The following object is masked from 'package:stats':
-## 
-##     filter
-```
-
-```
-## The following object is masked from 'package:graphics':
-## 
-##     layout
-```
-
-```r
 library(gganimate)     # for adding animation layers to ggplots
 library(gifski)        # for creating the gif (don't need to load this library every time,but need it installed)
 library(transformr)    # for "tweening" (gganimate)
-```
-
-```
-## 
-## Attaching package: 'transformr'
-```
-
-```
-## The following object is masked from 'package:sf':
-## 
-##     st_normalize
-```
-
-```r
 library(shiny)         # for creating interactive apps
 library(patchwork)     # for nicely combining ggplot2 graphs  
 library(gt)            # for creating nice tables
-```
-
-```
-## 
-## Attaching package: 'gt'
-```
-
-```
-## The following object is masked from 'package:openintro':
-## 
-##     sp500
-```
-
-```r
 library(rvest)         # for scraping data
-```
-
-```
-## 
-## Attaching package: 'rvest'
-```
-
-```
-## The following object is masked from 'package:readr':
-## 
-##     guess_encoding
-```
-
-```r
 library(robotstxt)     # for checking if you can scrape data
 theme_set(theme_minimal())
 ```
@@ -215,18 +46,6 @@ data("garden_harvest")
 
 #COVID-19 data from the New York Times
 covid19 <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
-```
-
-```
-## Rows: 42678 Columns: 5
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: ","
-## chr  (2): state, fips
-## dbl  (2): cases, deaths
-## date (1): date
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
 
 ## Put your homework on GitHub!
@@ -262,18 +81,7 @@ X2020_harvest <- read_csv("https://raw.githubusercontent.com/llendway/scraping_e
                     weight = col_number()), 
     na = "MISSING", 
     skip = 2)
-```
 
-```
-## New names:
-## * `` -> ...1
-```
-
-```
-## Warning: One or more parsing issues, see `problems()` for details
-```
-
-```r
 summary(X2020_harvest)
 ```
 
@@ -303,17 +111,6 @@ summary(X2020_harvest)
 groceries <- read_csv("Groceries_dataset.csv")
 ```
 
-```
-## Rows: 38765 Columns: 3
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: ","
-## chr (2): Date, itemDescription
-## dbl (1): Member_number
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-```
-
 
 
 3. Create a table using `gt` with data from your project or from the `garden_harvest` data if your project data aren't ready. Use at least 3 `gt()` functions.
@@ -327,12 +124,12 @@ gt(garden_harvest)%>%
 ```
 
 ```{=html}
-<div id="lidhjfafjf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="orahxmeprt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#lidhjfafjf .gt_table {
+#orahxmeprt .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -357,7 +154,7 @@ gt(garden_harvest)%>%
   border-left-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_heading {
+#orahxmeprt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -369,7 +166,7 @@ gt(garden_harvest)%>%
   border-right-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_title {
+#orahxmeprt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -381,7 +178,7 @@ gt(garden_harvest)%>%
   border-bottom-width: 0;
 }
 
-#lidhjfafjf .gt_subtitle {
+#orahxmeprt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -393,13 +190,13 @@ gt(garden_harvest)%>%
   border-top-width: 0;
 }
 
-#lidhjfafjf .gt_bottom_border {
+#orahxmeprt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_col_headings {
+#orahxmeprt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -414,7 +211,7 @@ gt(garden_harvest)%>%
   border-right-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_col_heading {
+#orahxmeprt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -434,7 +231,7 @@ gt(garden_harvest)%>%
   overflow-x: hidden;
 }
 
-#lidhjfafjf .gt_column_spanner_outer {
+#orahxmeprt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -446,15 +243,15 @@ gt(garden_harvest)%>%
   padding-right: 4px;
 }
 
-#lidhjfafjf .gt_column_spanner_outer:first-child {
+#orahxmeprt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lidhjfafjf .gt_column_spanner_outer:last-child {
+#orahxmeprt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lidhjfafjf .gt_column_spanner {
+#orahxmeprt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -466,7 +263,7 @@ gt(garden_harvest)%>%
   width: 100%;
 }
 
-#lidhjfafjf .gt_group_heading {
+#orahxmeprt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -491,7 +288,7 @@ gt(garden_harvest)%>%
   vertical-align: middle;
 }
 
-#lidhjfafjf .gt_empty_group_heading {
+#orahxmeprt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -506,15 +303,15 @@ gt(garden_harvest)%>%
   vertical-align: middle;
 }
 
-#lidhjfafjf .gt_from_md > :first-child {
+#orahxmeprt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lidhjfafjf .gt_from_md > :last-child {
+#orahxmeprt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lidhjfafjf .gt_row {
+#orahxmeprt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -533,7 +330,7 @@ gt(garden_harvest)%>%
   overflow-x: hidden;
 }
 
-#lidhjfafjf .gt_stub {
+#orahxmeprt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -546,7 +343,7 @@ gt(garden_harvest)%>%
   padding-right: 5px;
 }
 
-#lidhjfafjf .gt_stub_row_group {
+#orahxmeprt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -560,11 +357,11 @@ gt(garden_harvest)%>%
   vertical-align: top;
 }
 
-#lidhjfafjf .gt_row_group_first td {
+#orahxmeprt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lidhjfafjf .gt_summary_row {
+#orahxmeprt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -574,16 +371,16 @@ gt(garden_harvest)%>%
   padding-right: 5px;
 }
 
-#lidhjfafjf .gt_first_summary_row {
+#orahxmeprt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_first_summary_row.thick {
+#orahxmeprt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lidhjfafjf .gt_last_summary_row {
+#orahxmeprt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -593,7 +390,7 @@ gt(garden_harvest)%>%
   border-bottom-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_grand_summary_row {
+#orahxmeprt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -603,7 +400,7 @@ gt(garden_harvest)%>%
   padding-right: 5px;
 }
 
-#lidhjfafjf .gt_first_grand_summary_row {
+#orahxmeprt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -613,11 +410,11 @@ gt(garden_harvest)%>%
   border-top-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_striped {
+#orahxmeprt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lidhjfafjf .gt_table_body {
+#orahxmeprt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -626,7 +423,7 @@ gt(garden_harvest)%>%
   border-bottom-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_footnotes {
+#orahxmeprt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -640,7 +437,7 @@ gt(garden_harvest)%>%
   border-right-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_footnote {
+#orahxmeprt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -649,7 +446,7 @@ gt(garden_harvest)%>%
   padding-right: 5px;
 }
 
-#lidhjfafjf .gt_sourcenotes {
+#orahxmeprt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -663,7 +460,7 @@ gt(garden_harvest)%>%
   border-right-color: #D3D3D3;
 }
 
-#lidhjfafjf .gt_sourcenote {
+#orahxmeprt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -671,60 +468,60 @@ gt(garden_harvest)%>%
   padding-right: 5px;
 }
 
-#lidhjfafjf .gt_left {
+#orahxmeprt .gt_left {
   text-align: left;
 }
 
-#lidhjfafjf .gt_center {
+#orahxmeprt .gt_center {
   text-align: center;
 }
 
-#lidhjfafjf .gt_right {
+#orahxmeprt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lidhjfafjf .gt_font_normal {
+#orahxmeprt .gt_font_normal {
   font-weight: normal;
 }
 
-#lidhjfafjf .gt_font_bold {
+#orahxmeprt .gt_font_bold {
   font-weight: bold;
 }
 
-#lidhjfafjf .gt_font_italic {
+#orahxmeprt .gt_font_italic {
   font-style: italic;
 }
 
-#lidhjfafjf .gt_super {
+#orahxmeprt .gt_super {
   font-size: 65%;
 }
 
-#lidhjfafjf .gt_footnote_marks {
+#orahxmeprt .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#lidhjfafjf .gt_asterisk {
+#orahxmeprt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lidhjfafjf .gt_slash_mark {
+#orahxmeprt .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#lidhjfafjf .gt_fraction_numerator {
+#orahxmeprt .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#lidhjfafjf .gt_fraction_denominator {
+#orahxmeprt .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -4691,11 +4488,6 @@ garden_harvest_new <- garden_harvest%>%
   filter(Vegetable %in% c("Lettuce", "Kale", "Spinach", "Swiss Chard")) 
 ```
 
-```
-## `summarise()` has grouped output by 'date'. You can override using the
-## `.groups` argument.
-```
-
 
 ```r
 g1<- ggplot(garden_harvest_new, aes(x = date, y = cum_weight, color = Vegetable, label = Vegetable))+
@@ -4714,10 +4506,6 @@ g1<- ggplot(garden_harvest_new, aes(x = date, y = cum_weight, color = Vegetable,
         panel.grid.minor.x = element_blank(),
         panel.background = element_blank(),
         panel.grid.major.y = element_line(size = .1, color = "gray85" ))
-```
-
-```
-## Warning: Ignoring unknown parameters: se
 ```
 
 
@@ -4879,6 +4667,4 @@ courses_2017%>%
 
 <img src="06_exercises_files/figure-html/unnamed-chunk-13-1.png" title="This is a graph of the distributions of course title lengths by academic department. The data on the course title lengths are represented as boxplots -- one for each department." alt="This is a graph of the distributions of course title lengths by academic department. The data on the course title lengths are represented as boxplots -- one for each department."  />
 
-  
 
-**DID YOU REMEMBER TO UNCOMMENT THE OPTIONS AT THE TOP?**
