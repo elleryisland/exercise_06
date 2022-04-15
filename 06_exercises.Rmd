@@ -292,4 +292,4 @@ courses_2017%>%
         panel.grid.major.y = element_blank())
 ```
 
-
+git hub link: https://github.com/elleryisland/exercise_06
